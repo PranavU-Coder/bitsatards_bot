@@ -1,0 +1,1 @@
+I will finish this readme file once I'm done with the bot functionality.
