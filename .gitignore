@@ -4,5 +4,11 @@
 # dataset
 /data
 
-#API_KEY
-/API_KEY
+# API_KEY
+/.env
+
+# stupid fucking cache
+/__pycache__
+
+# discord logs
+/discord.log
