@@ -4,8 +4,10 @@ import logging
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
-token = os.getenv('DISCORD_TOKEN')
+if os.getenv('RAILWAY_ENVIRONMENT') is None:  
+    load_dotenv()
+
+token = os.getenv('TOKEN')
 
 handler = logging.FileHandler(filename='discord.log',encoding='utf-8',mode='w')
 intents = discord.Intents.default()
