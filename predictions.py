@@ -15,10 +15,7 @@ def predict_cutoffs(year, reference_df, output_file='predictions.csv'):
     
     result = prediction_data[['campus', 'branch', 'marks', 'year']].sort_values('marks', ascending=False)
     
-    # Save to CSV
-    result.to_csv(output_file, index=False)
-    print(f"Predictions saved to {output_file}")
-    
+    result.to_csv(output_file, index=False)    
     return result
 
 df = pd.read_csv('data/cutoff_2025.csv')

@@ -48,13 +48,4 @@ def plot_marks_by_branch(campus_name, branch):
     plt.savefig(f"{campus_name}_{branch}_marks_trend.png")
     plt.close()
 
-plot_marks_by_campus('Pilani')
-plot_marks_by_branch('Pilani', 'B.E. Computer Science')
-
-def help():
-    print(f"This bot is designed to make predictions for upcoming bitsat examination, Thanks for using!")
-    print(f"These are the commands you can use presently (for branch-names try to write their exact names like 'B.E. Computer Science' etc.)")
-    print(f".plot (campus-name)")
-    print(f".plot-branch (campus-name) (branch-name)")
-
-help()
+# I am removing the help func temporarily as it is pointless with discord bot since the printed strings are returned to console logs to me and not to the user directly
