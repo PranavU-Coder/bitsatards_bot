@@ -36,7 +36,6 @@ async def plot(ctx, campus_name: str):
         await ctx.send(f"generating plot for {campus_name}...")
         
         anal.plot_marks_by_campus(campus_name)
-        
         filename = f"{campus_name.lower()}_marks_trend.png"
         
         if os.path.exists(filename):
@@ -44,14 +43,14 @@ async def plot(ctx, campus_name: str):
                 await ctx.send(file=discord.File(f, filename))
             os.remove(filename)
         else:
-            await ctx.send(f"No data found for campus: {campus_name}")
+            await ctx.send(f"no data found for campus: {campus_name}")
     except Exception as e:
-        await ctx.send(f"Error generating plot: {str(e)}")
+        await ctx.send(f"error generating plot: {str(e)}")
 
 @bot.command(name='plot-branch')
 async def plot_branch(ctx, campus_name: str, *, branch: str):
     try:
-        await ctx.send(f"Generating plot for {branch} in {campus_name}...")
+        await ctx.send(f"generating plot for {branch} in {campus_name}...")
         
         anal.plot_marks_by_branch(campus_name, branch)
         filename = f"{campus_name.lower()}_{branch.lower().replace(' ', '_').replace('.', '')}_marks_trend.png"
@@ -61,9 +60,9 @@ async def plot_branch(ctx, campus_name: str, *, branch: str):
                 await ctx.send(file=discord.File(f, filename))
             os.remove(filename)
         else:
-            await ctx.send(f"No data found for {branch} in {campus_name}")
+            await ctx.send(f"no data found for {branch} in {campus_name}")
     except Exception as e:
-        await ctx.send(f"Error generating plot: {str(e)}")
+        await ctx.send(f"error generating plot: {str(e)}")
 
 @bot.command()
 async def help(ctx):

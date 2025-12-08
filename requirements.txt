@@ -1,2 +1,5 @@
 discord.py
 python-dotenv
+pandas
+seaborn
+matplotlib
