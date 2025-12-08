@@ -9,6 +9,13 @@ if os.getenv('RAILWAY_ENVIRONMENT') is None:
 
 token = os.getenv('DISCORD_TOKEN')
 
+# fucking hell
+
+print(f"RAILWAY_ENVIRONMENT exists: {os.getenv('RAILWAY_ENVIRONMENT')}")
+print(f"All env vars: {list(os.environ.keys())}")
+print(f"DISCORD_TOKEN value: {repr(token)}")
+print(f"Token is None: {token is None}")
+
 handler = logging.FileHandler(filename='discord.log',encoding='utf-8',mode='w')
 intents = discord.Intents.default()
 intents.message_content = True
