@@ -1,9 +1,6 @@
 # virtual env
 /bitsat
 
-# dataset
-/data
-
 # API_KEY
 /.env
 
@@ -12,3 +9,5 @@
 
 # discord logs
 /discord.log
+
+# no longer keeping dataset hidden for view as it is genuinely inconvenient for my bot to work without it
