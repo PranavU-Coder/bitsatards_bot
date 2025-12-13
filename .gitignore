@@ -10,4 +10,5 @@
 # discord logs
 /discord.log
 
-# no longer keeping dataset hidden for view as it is genuinely inconvenient for my bot to work without it
+# dataset (removing cause I'm no longer hosting on railway and using my second laptop to double as a server)
+/data
