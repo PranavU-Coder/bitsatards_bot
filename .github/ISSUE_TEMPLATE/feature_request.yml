@@ -1,0 +1,44 @@
+name: Feature Request
+description: Suggest a new feature or improvement
+title: "feat: "
+labels: ["feature"]
+body:
+  - type: textareai
+    attributes:
+      label: Feature Description
+      description: What do you want to add or improve?
+      placeholder: |
+        Clearly describe the feature or enhancement you'd like to see implemented.
+        For example: improve !!resources command with all relevant course material.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Use Case
+      description: Why would this feature be helpful?
+      placeholder: |
+        Describe the problem it solves or the value it brings to users or developers.
+        For example: This helps developers to guide users of the bot to actual resources for the intended purpose.
+      render: shell
+
+  - type: textarea
+    attributes:
+      label: Affected Areas
+      description: Which aspects does this change impact?
+      placeholder: |
+        List relevant areas like files such as: main.py, analytics.py etc.
+      render: shell
+
+  - type: textarea
+    attributes:
+      label: Additional Context
+      description: Add links, mockups, screenshots, or related issues.
+      placeholder: |
+        Include anything that helps explain your request better.
+        For example:
+        - Screenshot of current layout
+        - Related issues: #123
+        - External inspiration: [link]
+      render: shell

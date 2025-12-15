@@ -1,0 +1,13 @@
+blank_issues_enabled: false
+contact_links:
+  - name:  Ask a question or get support
+    url: https://github.com/PranavU-Coder/bitsatards_bot/discussions
+    about: Please ask questions or request help via GitHub Discussions.
+
+issue_templates:
+  - name:  Bug Report
+    description: Report an issue or unexpected behavior.
+    file: bug.yml
+  - name:  Feature Request
+    description: Propose a new feature or improvement.
+    file: feature.yml

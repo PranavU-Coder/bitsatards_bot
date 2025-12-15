@@ -1,0 +1,47 @@
+name: Bug Report
+description: File a bug report to help us improve the project
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: textarea
+    attributes:
+      label: What happened?
+      description: A clear and concise description of the issue.
+      placeholder: |
+        Describe the issue you encountered and what you expected to happen.
+        Example: "When I executed !!plot-branch <campus>, <branch> it generated an empty graph with no lines and visible points."
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: Provide step-by-step instructions to reproduce the issue.
+      placeholder: |
+        1. Go to server where the bot is run continously.
+        2. Run the exact command which produced this error
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: What should have happened instead?
+      placeholder: "Example: I expected a proper plot of the trend for the branch in this campus."
+      render: shell
+
+  - type: textarea
+    attributes:
+      label: Screenshots / logs
+      description: Paste any error logs or add screenshots if applicable.
+      placeholder: "[insert-image of issue that persists] with suitable caption."
+      render: shell
+
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: Any other details or edge cases that might be related.
+      placeholder: "This only happens when I execute the command in Mixed-Case."
+      render: shell
