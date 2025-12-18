@@ -3,7 +3,7 @@ description: Suggest a new feature or improvement
 title: "feat: "
 labels: ["feature"]
 body:
-  - type: textareai
+  - type: textarea
     attributes:
       label: Feature Description
       description: What do you want to add or improve?
