@@ -1,7 +1,7 @@
 import pandas as pd
 import pickle
 
-def predict_cutoffs(year, reference_df, output_file='predictions.csv'):
+def predict_cutoffs(year, difficulty, reference_df, output_file='predictions.csv'):
     with open("models/scaler.pkl", 'rb') as f:
         preprocessor = pickle.load(f)
     with open("models/model.pkl", 'rb') as f:
@@ -9,6 +9,7 @@ def predict_cutoffs(year, reference_df, output_file='predictions.csv'):
     
     prediction_data = reference_df[['campus', 'branch']].drop_duplicates().copy()
     prediction_data['year'] = year
+    prediction_data['difficulty'] = difficulty 
     
     prediction_data_scaled = preprocessor.transform(prediction_data)
     prediction_data['marks'] = model.predict(prediction_data_scaled).round().astype(int)
@@ -19,7 +20,7 @@ def predict_cutoffs(year, reference_df, output_file='predictions.csv'):
     return result
 
 df = pd.read_csv('data/cutoff_2025.csv')
-predictions_2026 = predict_cutoffs(year=2026, reference_df=df, output_file='data/predictions_2026.csv')
+predictions_2026 = predict_cutoffs(year=2026, difficulty = 'hard', reference_df=df, output_file='data/predictions_2026.csv')
 print(predictions_2026)
 
 predictions_2026.to_csv('data/predictions_2026.csv', index=False)
