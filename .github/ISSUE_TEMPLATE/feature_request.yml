@@ -10,7 +10,7 @@ body:
       placeholder: |
         Clearly describe the feature or enhancement you'd like to see implemented.
         For example: improve !!resources command with all relevant course material.
-      render: shell
+      render: markdown
     validations:
       required: true
 
@@ -21,7 +21,7 @@ body:
       placeholder: |
         Describe the problem it solves or the value it brings to users or developers.
         For example: This helps developers to guide users of the bot to actual resources for the intended purpose.
-      render: shell
+      render: markdown
 
   - type: textarea
     attributes:
@@ -29,7 +29,7 @@ body:
       description: Which aspects does this change impact?
       placeholder: |
         List relevant areas like files such as: main.py, analytics.py etc.
-      render: shell
+      render: markdown
 
   - type: textarea
     attributes:
@@ -41,4 +41,4 @@ body:
         - Screenshot of current layout
         - Related issues: #123
         - External inspiration: [link]
-      render: shell
+      render: markdown

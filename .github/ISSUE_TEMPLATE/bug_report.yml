@@ -10,7 +10,7 @@ body:
       placeholder: |
         Describe the issue you encountered and what you expected to happen.
         Example: "When I executed !!plot-branch <campus>, <branch> it generated an empty graph with no lines and visible points."
-      render: shell
+      render: markdown
     validations:
       required: true
 
@@ -21,7 +21,7 @@ body:
       placeholder: |
         1. Go to server where the bot is run continously.
         2. Run the exact command which produced this error
-      render: shell
+      render: markdown
     validations:
       required: true
 
@@ -30,18 +30,18 @@ body:
       label: Expected behavior
       description: What should have happened instead?
       placeholder: "Example: I expected a proper plot of the trend for the branch in this campus."
-      render: shell
+      render: markdown
 
   - type: textarea
     attributes:
       label: Screenshots / logs
       description: Paste any error logs or add screenshots if applicable.
       placeholder: "[insert-image of issue that persists] with suitable caption."
-      render: shell
+      render: markdown
 
   - type: textarea
     attributes:
       label: Additional context
       description: Any other details or edge cases that might be related.
       placeholder: "This only happens when I execute the command in Mixed-Case."
-      render: shell
+      render: markdown
