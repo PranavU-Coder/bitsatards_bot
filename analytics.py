@@ -28,7 +28,7 @@ def load_branch_mappings(filepath="branch_names.txt"):
                 alias = alias.strip()
 
                 alias_to_actual[alias.lower()] = full_name
-                actual_to_alias[full_name.lower()] = alias  # FIXED: was actual_to_actual
+                actual_to_alias[full_name.lower()] = alias
 
     return alias_to_actual, actual_to_alias
 
