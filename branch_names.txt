@@ -1,0 +1,14 @@
+B.E. Chemical: chem
+B.E. Civil: civil 
+B.E. Mechanical: mech 
+B.E. Computer Science: cse
+B.E. Electronics & Instrumentation: eni 
+B.E. Manufacturing: manufacturing 
+B. Pharm: pharm 
+M.Sc. Biological Sciences: msc bio 
+M.Sc. Chemistry: msc chem 
+M.Sc. Economics: msc eco 
+M.Sc. Mathematics: msc math 
+M.Sc. Physics: msc phy 
+B.E. Electrical & Electronics: eee
+B.E. Electronics & Communication: ece

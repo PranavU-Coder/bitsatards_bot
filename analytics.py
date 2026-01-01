@@ -11,14 +11,55 @@ import glob
 data = glob.glob(os.path.join('data/', '*.csv'))
 df = pd.concat([pd.read_csv(f) for f in data], ignore_index=True)
 
-df.columns = df.columns.str.strip()
+def load_branch_mappings(filepath="branch_names.txt"):
+    """
+    load branch name mappings from 'branch_names' txt file.
+    """
+    
+    alias_to_actual = {}
+    actual_to_alias = {}
+
+    with open(filepath, 'r') as f:
+        for line in f:
+            line = line.strip()
+            if ':' in line:
+                full_name, alias = line.split(':', 1)
+                full_name = full_name.strip()
+                alias = alias.strip()
+
+                alias_to_actual[alias.lower()] = full_name
+                actual_to_alias[full_name.lower()] = alias  # FIXED: was actual_to_actual
+
+    return alias_to_actual, actual_to_alias
+
+def normalize_branch_name(user_input, alias_to_full):
+    """
+    convert user input (shorthand or full name) to the full branch name.
+    returns the full name if found, otherwise None.
+    """
+    
+    user_input = user_input.strip().lower()
+
+    if user_input in alias_to_full:
+        return alias_to_full[user_input]
+
+    for alias, full_name in alias_to_full.items():
+        if full_name.lower() == user_input:
+            return full_name
+
+    return None
+
+alias_to_actual, actual_to_alias = load_branch_mappings('branch_names.txt')
 
 def plot_marks_by_campus(campus_name):
-
+    """
+    Plot all branches for a given campus 
+    """
+    
     campus_name = campus_name.strip().lower()
-    
+
     filtered_df = df[df['campus'].str.lower() == campus_name]
-    
+
     plt.figure(figsize=(12, 7))
     sns.lineplot(data=filtered_df, x='year', y='marks', hue='branch')
     plt.title(f'Marks Trend for {campus_name.title()}')
@@ -29,24 +70,35 @@ def plot_marks_by_campus(campus_name):
     plt.savefig(f'{campus_name}_marks_trend.png')
     plt.close()
 
-
 def plot_marks_by_branch(campus_name, branch):
+    """
+    plots marks of a particular branch in a specific BITS campus, uses comma as a separator to indicate respective fields.
+    """
+
     campus_name = campus_name.strip().lower()
-    branch = branch.strip().lower()
     
+    normalized_branch = normalize_branch_name(branch, alias_to_actual)
+   
+    if normalized_branch is None:
+        print(f"warning: unknown branch '{branch}'")
+        return None
+
     filtered_df = df[
         (df['campus'].str.lower() == campus_name) &
-        (df['branch'].str.lower() == branch)
+        (df['branch'].str.lower() == normalized_branch.lower())
     ]
+
+    if filtered_df.empty:
+        return None
 
     plt.figure(figsize=(12, 7))
     sns.lineplot(data=filtered_df, x='year', y='marks')
-    plt.title(f"Marks Trend for {branch.title()} in {campus_name.title()}")
+    plt.title(f"Marks Trend for {normalized_branch.title()} in {campus_name.title()}")
     plt.xlabel('Year')
     plt.ylabel('Marks')
     plt.tight_layout()
     
-    safe_branch = branch.replace(' ', '_').replace('.', '')
+    safe_branch = normalized_branch.replace(' ', '_').replace('.', '')
     filename = f"{campus_name}_{safe_branch}_marks_trend.png"
     
     plt.savefig(filename)
@@ -54,13 +106,13 @@ def plot_marks_by_branch(campus_name, branch):
     
     return filename
 
-# I am removing the help func temporarily as it is pointless with discord bot since the printed strings are returned to console logs to me and not to the user directly
-
 def get_predictions(limit=25, campus_filter=None):
-
-    headers = ["Campus", "Branch", "Marks"]
+    """
+    hardcoded data is bad practice however who said I'm a good programmer to begin with.
+    all the values here are results from the predictions python file, this is also easy for the bot to fetch values.
+    """
     
-    # hardcoded data (Campus, Branch, Marks) from predictions_2026.csv since this is easier to compute and fetch for the bot.
+    headers = ["Campus", "Branch", "Marks"]
     
     data = [
         ["Pilani", "B.E. Computer Science", 317],

@@ -21,16 +21,18 @@ bot.remove_command('help')
 
 @bot.event 
 async def on_ready():
-    print("ready when you're")
+    """
+    prints to the console screen to my server laptop to signal the bot is up and running.
+    """
 
-@bot.event
-async def on_message(message):
-    if message.author == bot.user:
-        return
-    await bot.process_commands(message)
+    print("ready when you're")
 
 @bot.command()
 async def plot(ctx, campus_name: str):
+    """
+    uses the analytics file's function to generate plots to end-user only based on campus
+    """
+
     try:
         await ctx.send(f"generating plot for {campus_name}...")
         
@@ -48,6 +50,10 @@ async def plot(ctx, campus_name: str):
 
 @bot.command(name='plot-branch')
 async def plot_branch(ctx, *, args: str):
+    """
+    uses the analytics file's function to generate plots to end-user now on both campus and its respective branch.
+    """
+
     try:
         if "," not in args:
             await ctx.send("**usage:** `!!plot-branch <Campus>, <Branch>`")
@@ -79,6 +85,10 @@ async def plot_branch(ctx, *, args: str):
 
 @bot.command(name='predict')
 async def predict(ctx, campus: str = None):
+    """
+    sends hardcoded-data found in analytics file to end-user in a nice tabular-format.
+    """
+
     if campus:
         await ctx.send(f"**generating 2026 predictions for {campus.title()}...**")
     else:
@@ -98,30 +108,40 @@ async def predict(ctx, campus: str = None):
 
 @bot.command()
 async def resources(ctx):
+    """
+    sends end-user all the resources to practice for the bitsat entrance examination.
+    """
+
     await ctx.send(f"please follow : https://www.reddit.com/r/Bitsatards/wiki/resources/")
 
 @bot.command()
 async def help(ctx):
-    helper = """
-**available commands**
+    """
+    guides the end-user to help navigating with the bot.
+    """
 
-this bot helps you give a rough idea what the bitsat exam cutoffs for the upcoming year should be and should be noted that this bot can't possibly predict the actual/exact value.
+    helper = """
+**Available Commands**
+
+this bot helps you get a rough idea of BITSAT exam cutoffs for the upcoming year, please note that predictions are estimates and may not reflect actual values.
 
 **Commands:**
-• `!!plot <campus-name>` - plot marks trend for all branches in a campus.
+• `!!plot <campus-name>` - plot marks trend for all branches in a campus
   Example: `!!plot Pilani`
 
 • `!!plot-branch <campus-name>, <branch-name>` - plot marks trend for a specific branch
-  Example: `!!plot-branch Pilani, B.E. Computer Science` please note that the comma is a must for the bot to read and execute command in this function.
+  Example: `!!plot-branch Pilani, B.E. Computer Science`
+  Note: comma separator is required and is not optional also you can use shortcuts like `cse`, `ece`, `mech`
 
-• `!!predict` - shows all the predictions made for the 2026 bitsat exam through past years data, you can also add a campus name infront of it to see in detail wrt all branches.
+• `!!predict [campus-name]` - show predictions for 2026 BITSAT exam
+  Example: `!!predict` or `!!predict Pilani`
 
-• `!!resources' - to get all the resources that can help you score better for this examination.
+• `!!resources` - get study resources for the BITSAT examination
 
-• `!!help` - shows this help message.
+• `!!help` - shows this help message
 
 **Available Campuses:** Pilani, Goa, Hyderabad
-**Branch Names:** Use exact names like "B.E. Computer Science", etc.
+**Branch Shortcuts:** cse, ece, eee, mech, civil, chem, eni, manufacturing, pharm, and more
     """
     await ctx.send(helper)
 
