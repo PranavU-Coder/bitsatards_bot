@@ -53,7 +53,7 @@ alias_to_actual, actual_to_alias = load_branch_mappings('branch_names.txt')
 
 def plot_marks_by_campus(campus_name):
     """
-    Plot all branches for a given campus 
+    plot all branches for a given campus 
     """
     
     campus_name = campus_name.strip().lower()
@@ -106,75 +106,50 @@ def plot_marks_by_branch(campus_name, branch):
     
     return filename
 
-def get_predictions(limit=25, campus_filter=None):
+def get_predictions(limit=25, campus_filter=None, situation=None):
     """
-    hardcoded data is bad practice however who said I'm a good programmer to begin with.
-    all the values here are results from the predictions python file, this is also easy for the bot to fetch values.
+    get predictions now based on hypothetical scenarios: "worst", "most-likely" and "best" case.
+    instead of hardcoding data like previously done, we will just use values we obtained from predict/..csv files.
+    by default we will consider difficulty: most-likely if user doesn't specify.
+    by default we will assume top-entries in the file if user doesn't specify campus.
     """
     
-    headers = ["Campus", "Branch", "Marks"]
+        
+    map = {
+        'worst': 'predict/worst_case.csv',
+        'most-likely': 'predict/most_likely_case.csv',
+        'best': 'predict/best_case.csv'
+    }
     
-    data = [
-        ["Pilani", "B.E. Computer Science", 317],
-        ["Pilani", "B.E. Mathematics and Computing", 286],
-        ["Goa", "B.E. Computer Science", 278],
-        ["Pilani", "B.E. Electrical & Communication", 272],
-        ["Hyderabad", "B.E. Computer Science", 272],
-        ["Goa", "B.E. Mathematics and Computing", 271],
-        ["Hyderabad", "B.E. Mathematics and Computing", 262],
-        ["Pilani", "B.E. Electrical & Electronics", 260],
-        ["Goa", "B.E. Electronics & Communication", 257],
-        ["Hyderabad", "B.E. Electronics & Communication", 254],
-        ["Pilani", "B.E. Electronics & Instrumentation", 252],
-        ["Pilani", "M.Sc. Economics", 251],
-        ["Goa", "B.E. Electronics and Computer", 249],
-        ["Hyderabad", "B.E. Electrical & Electronics", 244],
-        ["Goa", "B.E. Electrical & Electronics", 243],
-        ["Goa", "M.Sc. Economics", 243],
-        ["Hyderabad", "M.Sc. Economics", 240],
-        ["Pilani", "B.E. Mechanical", 238],
-        ["Goa", "B.E. Electronics & Instrumentation", 238],
-        ["Pilani", "M.Sc. Semiconductor", 237], 
-        ["Pilani", "M.Sc. Mathematics", 237],
-        ["Pilani", "M.Sc. Physics", 237],
-        ["Hyderabad", "B.E. Electronics & Instr.", 234], 
-        ["Goa", "M.Sc. Physics", 228],
-        ["Goa", "M.Sc. Mathematics", 228],
-        ["Goa", "B.E. Mechanical", 228],
-        ["Goa", "M.Sc. Semiconductor", 228],
-        ["Hyderabad", "M.Sc. Semiconductor", 225],
-        ["Hyderabad", "M.Sc. Mathematics", 225],
-        ["Hyderabad", "B.E. Mechanical", 225],
-        ["Pilani", "B.E. Chemical", 224],
-        ["Hyderabad", "M.Sc. Physics", 223],
-        ["Pilani", "M.Sc. Chemistry", 221],
-        ["Pilani", "B.E. Manufacturing", 219],
-        ["Goa", "B.E. Chemical", 215],
-        ["Hyderabad", "B.E. Chemical", 214],
-        ["Pilani", "B.E. Civil", 213],
-        ["Hyderabad", "M.Sc. Chemistry", 212],
-        ["Goa", "M.Sc. Chemistry", 212],
-        ["Pilani", "M.Sc. Bio Sciences", 211],
-        ["Hyderabad", "B.E. Civil", 210],
-        ["Goa", "M.Sc. Bio Sciences", 202],
-        ["Goa", "B.E. Environmental", 202],
-        ["Hyderabad", "M.Sc. Bio Sciences", 199],
-        ["Pilani", "B. Pharm", 164],
-        ["Hyderabad", "B. Pharm", 152]
-    ]
+    if situation is None:
+        situation = 'most-likely'
 
+    csv_file = map.get(situation.lower())
+    
+    if csv_file is None:
+        print(f"invalid usage, please use 'worst', 'most-likely' (or leave blank for this), or 'best'")
+        return None
+    
+    try:
+        df_pred = pd.read_csv(csv_file)
+        headers = df_pred.columns.tolist()
+        data = df_pred.values.tolist()
+    except FileNotFoundError:
+        print(f"file not found: {csv_file}")
+        return None
+    
     if campus_filter:
         target = campus_filter.strip().lower()
-        filtered_data = [row for row in data if row[0].lower() == target]
+        filtered_data = [row for row in data if str(row[0]).lower() == target]
         
         if not filtered_data:
-            return None 
-            
-        filename = f"pred_2026_{target}.png"
+            return None
+        
+        filename = f"pred_2026_{target}_{situation}.png"
     else:
         filtered_data = data
-        filename = "pred_2026_all.png"
-
+        filename = f"pred_2026_all_{situation}.png"
+    
     top_rows = filtered_data[:limit]
     
     fig_height = len(top_rows) * 0.4 + 1.2
@@ -183,12 +158,16 @@ def get_predictions(limit=25, campus_filter=None):
     ax.axis('tight')
     ax.axis('off')
     
+    num_cols = len(headers)
+    col_widths = [0.15, 0.55, 0.15, 0.15]  
+
     table = ax.table(
-        cellText=top_rows,
-        colLabels=headers,
-        cellLoc='center',
-        loc='center',
-        colColours=["#40466e"] * 3
+    cellText=top_rows,
+    colLabels=headers,
+    cellLoc='center',
+    loc='center',
+    colColours=["#40466e"] * num_cols,
+    colWidths=col_widths  
     )
     
     table.auto_set_font_size(False)

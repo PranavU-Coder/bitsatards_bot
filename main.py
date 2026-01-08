@@ -84,25 +84,40 @@ async def plot_branch(ctx, *, args: str):
         await ctx.send(f"error: {str(e)}")
 
 @bot.command(name='predict')
-async def predict(ctx, campus: str = None):
+async def predict(ctx, *, args: str = None):
     """
-    sends hardcoded-data found in analytics file to end-user in a nice tabular-format.
+    sends predicted-data found in csv files in neat and tabular manner.
+    uses get_predictions func in analytics file.
     """
-
+    
+    # default-case
+    campus = None
+    situation = 'most-likely'  
+    
+    if args:
+        if "," in args:
+            parts = args.split(",", 1)
+            campus = parts[0].strip() if parts[0].strip() else None
+            situation = parts[1].strip() if len(parts) > 1 and parts[1].strip() else 'most-likely'
+        else:
+            campus = args.strip()
+    
     if campus:
-        await ctx.send(f"**generating 2026 predictions for {campus.title()}...**")
+        await ctx.send(f"**generating 2026 {situation} predictions for {campus.title()}...**")
     else:
-        await ctx.send(f"**generating 2026 predictions...**")
+        await ctx.send(f"**generating 2026 {situation} predictions...**")
     
     try:
-        filename = anal.get_predictions(limit=25, campus_filter=campus)
+        filename = anal.get_predictions(limit=25, campus_filter=campus, situation=situation)
+        
         if filename and os.path.exists(filename):
             with open(filename, 'rb') as f:
                 await ctx.send(file=discord.File(f, filename))
             os.remove(filename)
         else:
             await ctx.send(f"no data found for campus: **{campus}**\n"
-                           "Available campuses: Pilani, Goa, Hyderabad")
+                           "available campuses: Pilani, Goa, Hyderabad\n"
+                           "available situations: best, most-likely (can keep blank), worst")
     except Exception as e:
         await ctx.send(f"critical Error: {e}")
 
@@ -126,15 +141,15 @@ async def help(ctx):
 this bot helps you get a rough idea of BITSAT exam cutoffs for the upcoming year, please note that predictions are estimates and may not reflect actual values.
 
 **Commands:**
-• `!!plot <campus-name>` - plot marks trend for all branches in a campus
+• `!!plot [campus-name]` - plot marks trend for all branches in a campus
   Example: `!!plot Pilani`
 
-• `!!plot-branch <campus-name>, <branch-name>` - plot marks trend for a specific branch
+• `!!plot-branch [campus-name], [branch-name]` - plot marks trend for a specific branch
   Example: `!!plot-branch Pilani, B.E. Computer Science`
-  Note: comma separator is required and is not optional also you can use shortcuts like `cse`, `ece`, `mech`
+  Note: comma separator is required and is not optional and now you can also use shortcuts like `cse`, `ece`, `mech`
 
-• `!!predict [campus-name]` - show predictions for 2026 BITSAT exam
-  Example: `!!predict` or `!!predict Pilani`
+• `!!predict [campus-name], [situation]` - show predictions for 2026 BITSAT exam with option to see different scenarios
+  Example: `!!predict`, `!!predict Pilani`, `!!predict Pilani, worst`
 
 • `!!resources` - get study resources for the BITSAT examination
 
