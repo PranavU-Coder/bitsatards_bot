@@ -1,4 +1,4 @@
-# First Look At The Bitsatards Bot
+# Introducing Bitsatards-Bot
 
 This src aims to be the discord bot for r/Bitsatards server, this bot serves the purpose of predicting cutoffs for upcoming bitsat examinations on basis of past-year trends (taking account from 2013) and can supports all of the commands which was planned in the second release (9/1/26):
 
