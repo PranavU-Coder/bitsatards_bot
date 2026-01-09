@@ -10,6 +10,23 @@ This src aims to be the discord bot for r/Bitsatards server, this bot serves the
 
 Currently the bot is deployed through my second laptop which doubles as a server purely to run programs 24/7 to avoid any middleman (cloud service providers) and charges.
 
+## Results Thus Far!
+
+![campus-trend](results/Pilani_Trend.png)
+*Pilani campus plot from 2013*
+
+------------------------------------------------------------------------------
+
+![branch-trend](results/Pilani_CSE_Trend.png)
+*CSE plot for Pilani from 2013*
+
+------------------------------------------------------------------------------
+
+![most-likely-predictions](results/Pilani_Most_Likely.png)
+*probable values for Pilani campus in 2026*
+
+The model in effect for prediction is a polynomial-regression of degree:2 which was the best methodology among every other approach.
+
 ## Future Plans
 
 There are plans to experiment by finding causation and co-relations with cutoffs of other entrance examinations such as: JEE however I don't think I will be able to complete it in time of announcement of this project.
