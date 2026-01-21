@@ -106,6 +106,82 @@ def plot_marks_by_branch(campus_name, branch):
     
     return filename
 
+def tabulate(data, headers, limit=25, filename=None):
+    """
+    general function to create a table plot from data.
+    """
+
+    # truncate after the set-limit 
+    top_rows = data[:limit]
+    
+    fig_height = len(top_rows) * 0.4 + 1.2
+    
+    fig, ax = plt.subplots(figsize=(10, fig_height))
+    ax.axis('tight')
+    ax.axis('off')
+    
+    num_cols = len(headers)
+    col_widths = [0.15, 0.50, 0.15, 0.20]  
+    
+    table = ax.table(
+        cellText=top_rows,
+        colLabels=headers,
+        cellLoc='center',
+        loc='center',
+        colColours=["#40466e"] * num_cols,
+        colWidths=col_widths  
+    )
+    
+    table.auto_set_font_size(False)
+    table.set_fontsize(12)
+    table.scale(1.2, 1.8)
+    
+    for (row, col), cell in table.get_celld().items():
+        if row == 0:
+            cell.set_text_props(weight='bold', color='white')
+
+    if filename is None:
+        filename = 'table_output.png'
+    plt.savefig(filename, bbox_inches='tight', dpi=150, pad_inches=0.1)
+    plt.close()
+    
+    return filename
+
+def select(limit=25, year=None, campus_filter=None):
+    """
+    to get a more detailed-fetch for cutoff values with regards to a particular campus for a specified year.
+    """
+
+    if year is None:
+        print("please specify a year")
+        return None
+    
+    csv_file = f"data/cutoff_{year}.csv"
+    
+    try:
+        df_cutoff = pd.read_csv(csv_file)
+        headers = df_cutoff.columns.tolist()
+        data = df_cutoff.values.tolist()
+    except FileNotFoundError:
+        print(f"file not found: {csv_file}")
+        print(f"no cutoff data available for year: {year}")
+        return None
+    
+    if campus_filter:
+        target = campus_filter.strip().lower()
+        filtered_data = [row for row in data if str(row[0]).lower() == target]
+        
+        if not filtered_data:
+            print(f"No data found for campus: {campus_filter}")
+            return None
+        
+        filename = f"cutoff_{year}_{target}.png"
+    else:
+        filtered_data = data
+        filename = f"cutoff_{year}_all.png"
+    
+    return tabulate(filtered_data, headers, limit=limit, filename=filename)
+
 def get_predictions(limit=25, campus_filter=None, situation=None):
     """
     get predictions now based on hypothetical scenarios: "worst", "most-likely" and "best" case.
@@ -150,35 +226,4 @@ def get_predictions(limit=25, campus_filter=None, situation=None):
         filtered_data = data
         filename = f"pred_2026_all_{situation}.png"
     
-    top_rows = filtered_data[:limit]
-    
-    fig_height = len(top_rows) * 0.4 + 1.2
-    
-    fig, ax = plt.subplots(figsize=(10, fig_height))
-    ax.axis('tight')
-    ax.axis('off')
-    
-    num_cols = len(headers)
-    col_widths = [0.15, 0.55, 0.15, 0.15]  
-
-    table = ax.table(
-    cellText=top_rows,
-    colLabels=headers,
-    cellLoc='center',
-    loc='center',
-    colColours=["#40466e"] * num_cols,
-    colWidths=col_widths  
-    )
-    
-    table.auto_set_font_size(False)
-    table.set_fontsize(12)
-    table.scale(1.2, 1.8)
-    
-    for (row, col), cell in table.get_celld().items():
-        if row == 0:
-            cell.set_text_props(weight='bold', color='white')
-    
-    plt.savefig(filename, bbox_inches='tight', dpi=150, pad_inches=0.1)
-    plt.close()
-    
-    return filename
+    return tabulate(filtered_data, headers, limit=limit, filename=filename)

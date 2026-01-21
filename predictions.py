@@ -23,8 +23,11 @@ def predict_cutoffs(year, difficulty, reference_df, output_file='predictions.csv
 
 # I'm taking 0.2 -> best case, 0.5 -> most-likely and 0.8 -> worst case 
 
+# to manipulate
+coefficient_of_difficulty = 0.5
+
 df = pd.read_csv('data/cutoff_2025.csv')
-predictions_2026 = predict_cutoffs(year=2026, difficulty = 0.5 , reference_df=df, output_file='predict/most_likely_case.csv')
+predictions_2026 = predict_cutoffs(year=2026, difficulty = coefficient_of_difficulty , reference_df=df, output_file='predict/most_likely_case.csv')
 print(predictions_2026)
 
 predictions_2026.to_csv('predict/most_likely_case.csv', index=False)
