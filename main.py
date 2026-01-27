@@ -176,13 +176,38 @@ async def predict(ctx, *, args: str = None):
     except Exception as e:
         await ctx.send(f"critical Error: {e}")
 
+
+@bot.command()
+async def sy(ctx):
+    """
+    sends syllabus of current year's bitsat examination syllabus to user.
+    """
+
+    await ctx.send(f"please check: https://admissions.bits-pilani.ac.in/FD/downloads/BITSAT_Syllabus.pdf?06012025")
+
+@bot.command()
+async def ypt(ctx):
+    """
+    sends information regarding official YPT group of the server to user.
+    """
+
+    await ctx.send(f"Group Name: BITSATards, Password: 123, the link is as follows: https://link.yeolpumta.com/P3R5cGU9Z3JvdXBJbnZpdGUmaWQ9MzU5OTUzNg==")
+
+@bot.command()
+async def da(ctx):
+    """
+    dates of bitsat-shifts & other such important tasks.
+    """
+
+    await ctx.send("Session 1 Starts From: Wednesday, 15 April 2026\nSession 2 Starts From: Sunday, 24 May 2026")
+
 @bot.command()
 async def resources(ctx):
     """
     Send study resources for BITSAT exam.
     """
 
-    await ctx.send(f"please follow : https://www.reddit.com/r/Bitsatards/wiki/resources/")
+    await ctx.send(f"please follow: https://www.reddit.com/r/Bitsatards/wiki/resources/ \nadditionally please refer to: https://discord.com/channels/1221093390167576646/1224005178106187877")
 
 @bot.command()
 async def help(ctx):
@@ -208,6 +233,12 @@ this bot helps you get a rough idea of BITSAT exam cutoffs for the upcoming year
 
 • `!!predict [campus-name], [situation]` - show predictions for 2026 BITSAT exam with option to see different scenarios
   Example: `!!predict`, `!!predict Pilani`, `!!predict Pilani, worst`
+
+• `!!da` - get exam-shift dates for both sessions
+
+• `!!ypt` - get the link, group-name & password for the official bitsatards-YPT group 
+
+• `!!sy` - get syllabus for current BITSAT examination
 
 • `!!resources` - get study resources for the BITSAT examination
 
