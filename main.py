@@ -1,11 +1,18 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 import logging
 from dotenv import load_dotenv
 import os
+from datetime import date, datetime, time as dt_time, timezone, timedelta
 
+from services.exam_tracker import ExamTracker
+from services.reminder import Reminder
 import analytics as anal
+
 load_dotenv()
+
+exam_tracker = ExamTracker()
+reminder_service = Reminder()
 
 token = os.getenv('DISCORD_TOKEN')
 
@@ -18,6 +25,9 @@ bot = commands.Bot(command_prefix='!!', intents=intents)
 bot.remove_command('help')
 
 DISCLAIMER_MSG = "all scores pre-**2022** have been standardized to **390**, so a score in **2021** which may have been **300** becomes **260** in current standards and settings of exam."
+
+# default is UTC & I don't live in that region.
+IST = timezone(timedelta(hours=5, minutes=30))
 
 async def display(ctx, filename: str, disclaimer: bool = True, not_found_msg: str = None):
     """
@@ -41,6 +51,49 @@ async def display(ctx, filename: str, disclaimer: bool = True, not_found_msg: st
             await ctx.send(f"error: could not generate or find file.")
         return False
 
+# this is for sending user reminders for their exam-time
+
+@tasks.loop(time=dt_time(hour=9, minute=0, tzinfo=IST))
+async def send_exam_reminders():
+    """
+    send daily reminders in the channel where interaction with bot was made.
+    """
+    
+    reminder_service.reset_daily_tracking()
+    reminders = reminder_service.users_to_remind()
+    
+    for reminder in reminders:
+        channel = bot.get_channel(reminder['channel_id'])
+        
+        if channel:
+            try:
+                await channel.send(
+                    f"<@{reminder['user_id']}> {reminder['message']}"
+                )
+                print(f"sent reminder to user {reminder['user_id']} in channel {channel.name}")
+            except discord.Forbidden:
+                print(f"no permission to send in channel {reminder['channel_id']}")
+                try:
+                    user = await bot.fetch_user(reminder['user_id'])
+                    await user.send(reminder['message'])
+                    print(f"sent DM fallback to {user.name}")
+                except Exception as dm_error:
+                    print(f"failed to DM user {reminder['user_id']}: {dm_error}")
+            except Exception as e:
+                print(f"failed to send reminder to {reminder['user_id']}: {e}")
+        else:
+            print(f"channel {reminder['channel_id']} not found, falling back to DM")
+            try:
+                user = await bot.fetch_user(reminder['user_id'])
+                await user.send(reminder['message'])
+                print(f"sent DM fallback to {user.name}")
+            except Exception as e:
+                print(f"failed to send to {reminder['user_id']}: {e}")
+
+@send_exam_reminders.before_loop
+async def before_reminder():
+    await bot.wait_until_ready()
+
 # all bot events/commands from here on now
 
 @bot.event
@@ -50,6 +103,8 @@ async def on_ready():
     """
 
     print("ready when you're")
+    if not send_exam_reminders.is_running():
+        send_exam_reminders.start()
 
 @bot.command()
 async def plot(ctx, campus_name: str):
@@ -58,8 +113,7 @@ async def plot(ctx, campus_name: str):
     """
     
     try:
-        await ctx.send(f"generating plot for {campus_name}...")
-        
+        await ctx.send(f"generating plot for {campus_name}")
         anal.plot_marks_by_campus(campus_name)
         filename = f"{campus_name.lower()}_marks_trend.png"
         
@@ -83,7 +137,7 @@ async def plot_branch(ctx, *, args: str):
         campus = campus_raw.strip()
         branch = branch_raw.strip()
         
-        await ctx.send(f"generating plot for **{branch}** in **{campus}**...")
+        await ctx.send(f"generating plot for **{branch}** in **{campus}**")
         
         filename = anal.plot_marks_by_branch(campus, branch)
         
@@ -127,9 +181,9 @@ async def select(ctx, *, args: str = None):
         return
     
     if campus:
-        await ctx.send(f"**fetching {year} cutoffs for {campus.title()}...**")
+        await ctx.send(f"**fetching {year} cutoffs for {campus.title()}**")
     else:
-        await ctx.send(f"**fetching {year} cutoffs for all campuses...**")
+        await ctx.send(f"**fetching {year} cutoffs for all campuses**")
     
     try:
         filename = anal.select(limit=25, year=year, campus_filter=campus)
@@ -162,9 +216,9 @@ async def predict(ctx, *, args: str = None):
             campus = args.strip()
     
     if campus:
-        await ctx.send(f"**generating 2026 {situation} predictions for {campus.title()}...**")
+        await ctx.send(f"**generating 2026 {situation} predictions for {campus.title()}**")
     else:
-        await ctx.send(f"**generating 2026 {situation} predictions...**")
+        await ctx.send(f"**generating 2026 {situation} predictions**")
     
     try:
         filename = anal.get_predictions(limit=25, campus_filter=campus, situation=situation)
@@ -191,7 +245,7 @@ async def ypt(ctx):
     sends information regarding official YPT group of the server to user.
     """
 
-    await ctx.send(f"Group Name: BITSATards, Password: 123, the link is as follows: https://link.yeolpumta.com/P3R5cGU9Z3JvdXBJbnZpdGUmaWQ9MzU5OTUzNg==")
+    await ctx.send(f"Group Name: BITSATards, Password: 123\nthe link is as follows: https://link.yeolpumta.com/P3R5cGU9Z3JvdXBJbnZpdGUmaWQ9MzU5OTUzNg==")
 
 @bot.command()
 async def da(ctx):
@@ -208,6 +262,47 @@ async def resources(ctx):
     """
 
     await ctx.send(f"please follow: https://www.reddit.com/r/Bitsatards/wiki/resources/ \nadditionally please refer to: https://discord.com/channels/1221093390167576646/1224005178106187877")
+
+@bot.command()
+async def time(ctx, flag: str = None, *, date_str: str = None):
+    """
+    this is for users to effectively track how much time they have till their D-Day.
+
+    flags:
+        !!time (default, no flags) does the job of returning user how much time is left till their exam.
+        !!time -s DD-MM-YYYY to set the exam date to track.
+        !!time -r will reset exam-date that has been set by user.
+    """
+
+    try:
+        if flag is None:
+            message = exam_tracker.get_countdown(ctx.author.id)
+            await ctx.send(message)
+            return
+
+        if flag in ['-s', '-set', '--set']:
+            if not date_str:
+                await ctx.send("please provide a date\nusage: `!!exam -s DD-MM-YYYY`\nExample: `!!exam -s 15-04-2026`")
+                return
+
+            try:
+                exam_date = datetime.strptime(date_str, '%d-%m-%Y').date()
+                message = exam_tracker.set_exam_date(
+                    user_id=ctx.author.id,
+                    username=str(ctx.author),
+                    channel_id=ctx.channel.id,
+                    exam_date=exam_date
+                )
+                await ctx.send(message)
+            except ValueError:
+                await ctx.send("invalid date format!\nplease use: `!!exam -s DD-MM-YYYY`\nExample: `!!exam -s 15-04-2026`")
+
+        elif flag in ['-r', '-reset', '--reset']:
+            message = exam_tracker.reset(ctx.author.id)
+            await ctx.send(message)
+    
+    except Exception as e:
+        await ctx.send(f"error: {str(e)}")
 
 @bot.command()
 async def help(ctx):
@@ -235,6 +330,9 @@ this bot helps you get a rough idea of BITSAT exam cutoffs for the upcoming year
   Example: `!!predict`, `!!predict Pilani`, `!!predict Pilani, worst`
 
 • `!!da` - get exam-shift dates for both sessions
+
+• `!!time` - track your time till your bitsat-shift, use flags such as -s & -r for your needs
+  Example: `!!time -s 15-04-2026` or `!!time -r`
 
 • `!!ypt` - get the link, group-name & password for the official bitsatards-YPT group 
 
