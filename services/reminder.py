@@ -39,7 +39,7 @@ class Reminder:
                 if days_until == 1:
                     message = f"**Tomorrow is BITSAT!**\n{user_exam.exam_date.strftime('%d %B %Y')}\nGet good sleep for tomorrow"
                 else:
-                    message = f"**{days_until} Days Until BITSAT**\n📆 {user_exam.exam_date.strftime('%d %B %Y')}\nPlease close discord & study for your own sake"
+                    message = f"**{days_until} Days Until BITSAT**\n{user_exam.exam_date.strftime('%d %B %Y')}\nPlease close discord & study for your own sake"
             elif days_until == 0:
                 message = f"**TODAY IS THE DAY!**\nBITSAT: {user_exam.exam_date.strftime('%d %B %Y')}\nGood luck Soldier"
             if message:
