@@ -1,3 +1,8 @@
+import os
+
+# dummy DATABASE_URL for testing-purposes only.
+os.environ.setdefault('DATABASE_URL', 'postgresql://dummy:dummy@localhost/dummy')
+
 import pytest
 import database.models as models
 from unittest.mock import Mock, patch
