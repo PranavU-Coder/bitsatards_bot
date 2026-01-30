@@ -5,6 +5,7 @@
 <!--
 Please move lines that apply to you out of the comment:
 - Code changes have been tested locally, or there are no code changes
+- All tests have been rightfully passed and ones which haven't have been marked down aptly
 - I know how to update typings and have done so, or typings don't need updating
 - This PR changes the projects's interface (inbuilt methods or parameters added)
 - This PR includes breaking changes (methods removed or renamed, parameters moved or removed)

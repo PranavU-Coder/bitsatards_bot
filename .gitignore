@@ -8,6 +8,7 @@
 /__pycache__
 /database/__pycache__
 /services/__pycache__
+/tests/__pycache__
 
 # discord logs
 /discord.log

@@ -10,3 +10,5 @@ lxml>=5.3.0
 beautifulsoup4>=4.14.3
 sqlalchemy>=2.0.45
 psycopg2-binary>=2.9.9
+pytest>=8.0.0
+pytest-mock>=3.14.0
