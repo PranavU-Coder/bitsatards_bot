@@ -1,6 +1,6 @@
-from datetime import date, datetime
-from typing import Optional
+from datetime import date
 from database.repository import ExamRepository
+
 
 class ExamTracker:
     """
@@ -10,7 +10,9 @@ class ExamTracker:
     def __init__(self):
         self.repo = ExamRepository()
 
-    def set_exam_date(self, user_id: int, username: str, channel_id: int, exam_date: date) -> str:
+    def set_exam_date(
+        self, user_id: int, username: str, channel_id: int, exam_date: date
+    ) -> str:
         """
         set user's exam date and return confirmation message
         """
@@ -39,7 +41,7 @@ class ExamTracker:
         exam_date = user_exam.exam_date
         days_left = (exam_date - today).days
 
-        exam_date_str = exam_date.strftime('%d %B %Y')
+        exam_date_str = exam_date.strftime("%d %B %Y")
 
         if days_left > 0:
             weeks = days_left // 7

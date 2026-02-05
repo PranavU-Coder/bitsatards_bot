@@ -1,0 +1,37 @@
+name: Release
+
+on:
+  workflow_call:
+
+permissions: 
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          release-type: python
+
+      - name: Checkout code
+        if: ${{ steps.release.outputs.pr }}
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ fromJson(steps.release.outputs.pr).head_sha }}
+
+      - name: install uv
+        if: ${{ steps.release.outputs.pr }}
+        uses: astral-sh/setup-uv@v5
+
+      - name: update uv lockfile
+        if: ${{ steps.release.outputs.pr }}
+        run: |
+          uv lock
+          git config user.name github-actions[bot]
+          git config user.email github-actions[bot]@users.noreply.github.com
+          git add uv.lock
+          git commit -m "chore: update uv.lock for new version" || echo "no changes"
+          git push

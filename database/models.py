@@ -3,9 +3,10 @@ from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
+
 class UserExam(Base):
-    __tablename__ = 'bitsat'
-    
+    __tablename__ = "bitsat"
+
     id = Column(Integer, primary_key=True)
     user_id = Column(BigInteger, unique=True, nullable=False)
     username = Column(String)

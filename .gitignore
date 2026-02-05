@@ -17,3 +17,11 @@
 # dataset (removing cause I'm no longer hosting on railway and using my second laptop to double as a server)
 /data
 /predict
+
+# uv migrations
+.python-version
+.ruff_cache
+.venv
+
+# fonts dir for better analytics-overview
+/fonts
