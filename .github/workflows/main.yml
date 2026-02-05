@@ -1,0 +1,14 @@
+name: Main
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  run-tests:
+    uses: ./.github/workflows/test.yml
+
+  run-release:
+    needs: run-tests 
+    uses: ./.github/workflows/release.yml
+    secrets: inherit

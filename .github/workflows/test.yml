@@ -1,28 +1,32 @@
-name: Run Tests
+name: Test
 
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
+  workflow_call:
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-    
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    
-    - name: Run tests
-      run: |
-        pytest tests/ -v
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: set up python
+        run: uv python install 3.11
+
+      - name: install dependencies
+        run: uv sync --all-extras --dev
+
+      - name: run tests
+        run: uv run pytest tests/ -v
