@@ -304,6 +304,13 @@ async def resources(ctx):
 
 
 @bot.command()
+async def src(ctx):
+    await ctx.send(
+        "please consider starring this project if you liked it: https://github.com/PranavU-Coder/bitsatards_bot"
+    )
+
+
+@bot.command()
 async def time(ctx, flag: str = None, *, date_str: str = None):
     """
     this is for users to effectively track how much time they have till their D-Day.
@@ -364,31 +371,33 @@ async def help(ctx):
 This bot helps you get a rough idea of BITSAT exam cutoffs for the upcoming year, please note that predictions are estimates and may not reflect actual values.
 
 **Commands:**
-• `!!plot [campus-name]` - plot marks trend for all branches in a campus
+- `!!plot [campus-name]` - plot marks trend for all branches in a campus
   Example: `!!plot Pilani`
 
-• `!!plot-branch [campus-name], [branch-name]` - plot marks trend for a specific branch
-  Example: `!!plot-branch Pilani, B.E. Computer Science`
-  Note: comma separator is required and is not optional and now you can also use shortcuts like `cse`, `ece`, `mech`
+- `!!plot-branch [branch-name] [campus-name]` - plot marks trend for a specific branch
+  Example: `!!plot-branch Computer Science Pilani` or `!!plot-branch cse Pilani`
+  Note: you can use shortcuts like `cse`, `ece`, `mech`, etc. Comma-separators are no longer needed.
 
-• `!!select [year], [campus-name]` - shows values of cutoffs for a particular year in BITSAT exam for all or a specified campus in tabulated manner.
-  Example: `!!select 2025`, `!!select 2025, pilani`
+- `!!select [year] [campus-name]` - shows cutoff values for a particular year in tabulated format for all or a specified campus
+  Example: `!!select 2025`, `!!select 2025 pilani`
 
-• `!!predict [campus-name], [situation]` - show predictions for 2026 BITSAT exam with option to see different scenarios
-  Example: `!!predict`, `!!predict Pilani`, `!!predict Pilani, worst`
+- `!!predict [campus-name] [situation]` - shows predictions for 2026 BITSAT exam with different scenarios (worst/best/most-likely)
+  Example: `!!predict`, `!!predict Pilani`, `!!predict Pilani worst`
 
-• `!!da` - get exam-shift dates for both sessions
+- `!!da` - get exam-shift dates for both sessions
 
-• `!!time` - track your time till your bitsat-shift, use flags such as -s & -r for your needs
+- `!!time` - track your time till your bitsat-shift, use flags such as -s & -r for your needs
   Example: `!!time -s 15-04-2026` or `!!time -r`
 
-• `!!ypt` - get the link, group-name & password for the official bitsatards-YPT group 
+- `!!ypt` - get the link, group-name & password for the official bitsatards-YPT group 
 
-• `!!sy` - get syllabus for current BITSAT examination
+- `!!sy` - get syllabus for current BITSAT examination
 
-• `!!resources` - get study resources for the BITSAT examination
+- `!!resources` - get study resources for the BITSAT examination
 
-• `!!help` - shows this help message
+- `!!src` - get the source code of this bot
+
+- `!!help` - shows this help message
 
 **Available Campuses:** Pilani, Goa, Hyderabad
 **Branch Shortcuts:** cse, ece, eee, mech, civil, chem, eni, manufacturing, pharm, and more

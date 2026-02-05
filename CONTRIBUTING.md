@@ -1,50 +1,149 @@
-# Written on: 25/12/2025
+# Contributing to Bitsatards Bot
 
-## Contributions
+## Code-Contributions
 
-I think this goes without saying but still, you need to have a GitHub account to make any sort of contributions to this codebase which also applies to creating issues as well.
+### last written on 5/2/2026
 
-If this is your time using GitHub or making code-contributions to open-source projects, no worries! again I am listing how you can still contribute to this project:
+Thank you for considering to contribute, Whether you are fixing a bug or adding a new feature, your help is appreciated highly. 
 
-1. proceed to fork this [repository](https://github.com/PranavU-Coder/bitsatards_bot)
-2. please navigate repositories listed under your profile where you should be able to find this codebase listed as a 'fork', clone that repository under **YOUR** profile and start working on it locally.
-3. install all necessary dependencies by running:
+If you are new to open-source or GitHub, follow the steps below to get started ->
 
-   ```bash
-   pip install -r requirements.txt
-    ```
+1.proceed to fork this [repository](https://github.com/PranavU-Coder/bitsatards_bot) and clone it locally:
 
-4. once any changes are made to the codebase from your end, make sure to 'commit' those changes to your forked repository, once the codebase you have modified seems aptly ready for being pushed to main codebase (the one which is under mine) proceed to create a 'pull-request'.
+```bash
+git clone https://github.com/{replace with your username}/bitsatards_bot.git
+cd bitsatards_bot
+```
 
-**PLEASE NOTE** that a pull-request will be accepted only and only if the code changes have been tested and were successful locally otherwise it will be **CLOSED**, please remove comments and any irrelevant statements that would be asked in template.md at time of creation of pull-request
+2.create a branch for your purpose of work: feat/fix:
+
+```bash
+git checkout -b feat/feat-name
+# or
+git checkout -b fix/bug-name
+```
+
+3.this project has **recently** migrated from pip to uv thus it is important to have uv installed on your system.
+
+```bash
+uv sync
+```
+
+This command will automatically create a virtual environment and install all required packages listed in the uv.lock file.
+
+3.Dev Standards:
+
+(1) Run
+
+```bash
+uv run ruff format . 
+```
+
+before committing.
+
+(2) Ensure
+
+```bash
+uv run ruff check .
+```
+
+passes without errors.
+
+(3) Run tests locally
+
+```bash
+uv run pytest
+```
+
+A passing build is required for any merge.
+
+(4) Commit Messages: Conventional Commits Please, prefix your messages accordingly:
+
+```text
+    feat: for new features.
+    fix: for bug fixes.
+    docs: for documentation/non-code changes.
+```
+
+4.commit your changes to your branch.
+
+push your changes to your fork.
+
+open a Pull Request (PR) against the master branch of the original repository.
+
+Wait for the automated tests to pass. Once reviewed they will be merged.
+
+Make sure to appropriately add/remove lines of the PULL_REQUEST_TEMPLATE.md which align to your changes.
 
 <img width="690" height="253" alt="image" src="https://github.com/user-attachments/assets/9f1af6c1-7d73-4f94-89f4-4b1cc84f6496" />
 
-at the moment, I alone am the codeowner of this codebase hence mostly it will be reviewing the pull-requests and approve if it fits with the existing codebase, assuming the scope of this project increases, I'm more than happy to give ownership of this codebase to any enthusiastic contributor who is willing to do code-reviews.
+At the moment, I alone am the codeowner of this codebase hence mostly it will be reviewing the pull-requests and approve if it fits with the existing codebase, assuming the scope of this project increases, I'm more than happy to give ownership of this codebase to any enthusiastic contributor who is willing to do code-reviews.
 
-please make sure that you are adding docstrings underneath your functions or any classes if you are planning to define as it will be easier for other developers to read and understand, similarly apply strong type annotations wherever possible, although again honestly at the time of writing this, I myself am guilty of not doing this so I will be working on this as well.
+More Recently, I have installed CodeRabbit on this repository to do code-reviews alongside me.
 
-There are plans of integrating unit-tests using pytest to ensure any code-change can handle edge-cases regardless of what the diffs would be.
+Feature Documentation:
+
+Please add docstrings underneath any new functions or classes. While much of the code is still being documented, it would be a good precedent in terms of open-source projects.
+
+Please consider using strong type hinting for all function signatures and variables. I am of the opinion and in the movement to make this project to be in the direction of 100%-type safe
 
 ## Features & Bug Reports
 
-Starting with a pretty obvious phase of development, which is what features or problems will this project be undertaking so to put it shortly, please check the [roadmap](https://github.com/users/PranavU-Coder/projects/9) page to get an idea of what is being actively worked on and what would be worked on in the future.
+Before contributing, review the [Roadmap](https://github.com/users/PranavU-Coder/projects/9) first to understand current priorities and exisitng issues that are being worked on.
 
-if you want any feature to be implemented please state **explicitly why exactly it is important** under the [issues](https://github.com/PranavU-Coder/bitsatards_bot/issues) tab by creating an issue under the same mentioned, similarly in bug-related issues please state where exactly is the bug occurring and how to reproduce from the developer's side so it can be worked upon to fix it.
+For raising issues, they must follow these criterias to be considered:
+
+Feature Requests: You must explicitly justify why the feature is necessary to be implemented.
+
+Bug Reports: You must provide a clear "Steps to Reproduce" section (check figure below). If the developer cannot replicate the bug based on your description, the issue will be marked as invalid.
+
+Out of Scope (These will not be considered): Do **NOT** raise issues regarding the website's UI or functionality. This codebase is a **MONO-REPO** and is hence independent of the web project; such issues will be closed without review.
 
 ![issues](https://github.com/user-attachments/assets/66934dc7-b137-4469-a8f5-6272a7681f38)
 
 **PLEASE NOTE**:
 
-(1) any issue with website's ui or functionality shouldn't be raised and as such any issues raised on that request will **NOT** be reviewed and closed as this codebase is independent from the one in which the website is going to be made in.
+This bot is currently self-hosted through my old laptop which doubles as a server rather than a third-party cloud-service provider which leads to uptime problems.
 
-(2) discord bot being inactive at some portions of the day, now the reason why I chose to clear this up right now is because **I AM NOT USING ANY THIRD-PARTY CLOUD SERVICE PROVIDER** for the continuous deployment and execution of the discord bot and am rather using my old laptop as a full-time server to run my programs 24/7 out of which this bot is one of them, once I return back to hostel there would be issues of running this bot particularly given how bad my hostel wifi is (since it frequently goes out) and as such if I'm not available when this occurs there is no way for me to fix it immediately.
+With hostel network dependencies, there is no way to resolve downtime-issues specially if I am not near the laptop which is hosting the bot.
 
-there is a fix to the second issue by adopting good MLOps principles and orchestrating deployment of a backup service provider when one goes out, however at the time of writing this I'm not skilled enough to navigate through this and implement it.
+**Possible Solution**: While orchestration for backup service providers is a goal (using good MLOps principles), it has not yet been implemented.
+
+Please do **NOT** open issues regarding temporary bot inactivity. These are known infrastructure limitations, not code problems.
 
 ## Pipeline
 
-The idea of execution-workflow will be greatly discussed in the second-version/iteration of this bot to ensure other open-source maintainers who might not be traditionally from an ML or a DS background can still maintain this codebase actively without much external help/assistance.
+The project follows a structured execution workflow designed for maintainability. Even without a massive background in Data Science, contributors can help updating the bot's by interacting with scripts:
+
+### Data-Acquisition && Machine-Learning
+
+**data_pipeline.py**: This scrapes official BITS-admission sites containing cutoff scores for particular years and converts raw data into standardized CSV files which can be then put in for model-training.
+
+**helper_notebook.ipynb**: This contains code  for the "model"—currently focused on min-max scaling applications so ... it is more of a statistical-validator than a traditional machine-learning model to process cutoff trends.
+
+**predictions.py**: This bridges between data-science and ML aspect of this repository with the production-aspect. It takes the constraints (user inputs) and applies the model logic to generate results. Note: This script is currently volatile and subject to change as the model logic matures.
+
+### Production
+
+**main.py**: Contains actual code for the bitsatards-discord-bot. It handles events, commands, and integrates with the prediction and database services.
+
+analytics.py: Handles data visualization for the bot's features.
+
+### Databases
+
+/services and /database concerns with the time-tracking feature which is a misc. feature of this bot using postgres as its database and SQLAlchemy as ORM. There is quite a bit of work to do here, but that will be halted till 3.0.0 release.
+
+**init_db.py** helps initializing database on your system with necessary columns.
+
+How to contribute to the flow:
+
+If you are adding a feature, identify where it sits. For example:
+
+A new way to view/formulate data -> analytics.py.
+
+Model-Improvement -> helper_notebook.ipynb
+
+Bot Command -> Modify main.py.
 
 ## Discussions
 
