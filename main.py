@@ -328,7 +328,7 @@ async def time(ctx, flag: str = None, *, date_str: str = None):
         if flag in ["-s", "-set", "--set"]:
             if not date_str:
                 return await ctx.send(
-                    "please provide a date\nusage: `!!exam -s DD-MM-YYYY`\nExample: `!!exam -s 15-04-2026`"
+                    "please provide a date\nusage: `!!exam -s DD-MM-YYYY`\nExample: `!!time -s 15-04-2026`"
                 )
 
             try:
@@ -342,7 +342,7 @@ async def time(ctx, flag: str = None, *, date_str: str = None):
                 await ctx.send(message)
             except ValueError:
                 await ctx.send(
-                    "invalid date format!\nplease use: `!!exam -s DD-MM-YYYY`\nExample: `!!exam -s 15-04-2026`"
+                    "invalid date format!\nplease use: `!!exam -s DD-MM-YYYY`\nExample: `!!time -s 15-04-2026`"
                 )
 
         elif flag in ["-r", "-reset", "--reset"]:
