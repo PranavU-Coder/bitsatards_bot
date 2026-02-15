@@ -67,9 +67,7 @@ There are plans to experiment by finding causation and co-relations with cutoffs
 
 The dataset is as follows for to work with: [dataset](!https://www.kaggle.com/datasets/pranavunni/bitsat-cutoff-dataset-2017-2025) for anyone willing to have their own spin-off to this.
 
-By mid-february 2026:
-
-1. a general-purpose website will be made public for everyone, in specific targetting people who prefer not using discord (We are almost there!)
+All of these can be actively tracked through this new [site](https://bitsat-predictor-devlogs.pranavu.dev/)
 
 After public-announcement & promotion, I will be back to implement various features and factors I have pinpointed thus far which can help in model-predictions more than anything.
 

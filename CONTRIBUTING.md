@@ -97,7 +97,7 @@ Feature Requests: You must explicitly justify why the feature is necessary to be
 
 Bug Reports: You must provide a clear "Steps to Reproduce" section (check figure below). If the developer cannot replicate the bug based on your description, the issue will be marked as invalid.
 
-Out of Scope (These will not be considered): Do **NOT** raise issues regarding the website's UI or functionality. This codebase is a **MONO-REPO** and is hence independent of the web project; such issues will be closed without review.
+Out of Scope (These will not be considered): Do **NOT** raise issues regarding the website's UI or functionality. This codebase is **NOT** a **MONO-REPO** and is hence independent of the web project; such issues will be closed without review.
 
 ![issues](https://github.com/user-attachments/assets/66934dc7-b137-4469-a8f5-6272a7681f38)
 

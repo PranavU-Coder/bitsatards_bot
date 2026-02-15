@@ -309,6 +309,11 @@ async def src(ctx):
         "please consider starring this project if you liked it: https://github.com/PranavU-Coder/bitsatards_bot"
     )
 
+@bot.command()
+async def web(ctx):
+    await ctx.send(
+        "the website: https://bitsat-predictor.com/"
+    )
 
 @bot.command()
 async def time(ctx, flag: str = None, *, date_str: str = None):
@@ -396,6 +401,8 @@ This bot helps you get a rough idea of BITSAT exam cutoffs for the upcoming year
 - `!!resources` - get study resources for the BITSAT examination
 
 - `!!src` - get the source code of this bot
+
+- `!!web` - gets the website link for bitsat-predictor
 
 - `!!help` - shows this help message
 
