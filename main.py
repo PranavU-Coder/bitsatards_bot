@@ -309,11 +309,11 @@ async def src(ctx):
         "please consider starring this project if you liked it: https://github.com/PranavU-Coder/bitsatards_bot"
     )
 
+
 @bot.command()
 async def web(ctx):
-    await ctx.send(
-        "the website: https://bitsat-predictor.com/"
-    )
+    await ctx.send("the website: https://bitsat-predictor.com/")
+
 
 @bot.command()
 async def time(ctx, flag: str = None, *, date_str: str = None):
