@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: "Unni"
+    given-names: "Pranav"
+title: "Bitsatards-Bot: Discord bot for predicting BITSAT cutoffs"
+version: 2.5.0
+date-released: 2026-02-05
+url: "https://github.com/PranavU-Coder/bitsatards_bot"
